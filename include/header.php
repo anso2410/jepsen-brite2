@@ -1,5 +1,8 @@
-
-
+<?php
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
+?>
 <!doctype html>
 <body lang="en">
 <head>
@@ -22,7 +25,9 @@
     <meta name="msapplication-config" content="/docs/4.5/assets/img/favicons/browserconfig.xml">
     <meta name="theme-color" content="#563d7c">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
     <link rel="stylesheet" href="css/app.css">
+
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -41,35 +46,68 @@
     <!-- Custom styles for this template -->
     <link href="navbar-top.css" rel="stylesheet">
 </head>
+
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-    <a class="navbar-brand" href="#">jepsenbrite</a>
+    <a class="navbar-brand" href="#">jepsen-brite</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Sign Up <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="." tabindex="-1" aria-disabled="true" > Create Event</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="." tabindex="-1" aria-disabled="true" > Past Events</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../profile.php" tabindex="-1" aria-disabled="true">Profile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Sign out</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Sign in</a>
-            </li>
+            <?php if (isset($_SESSION['auth'])): ?>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="log_out.php" tabindex="-1" aria-disabled="true" >Log Out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true" >Event</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Past Events</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="account.php" tabindex="-1" aria-disabled="true">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Create Events</a>
+                </li>
+
+
+            <?php else: ?>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="register.php" tabindex="-1" aria-disabled="true">Sign UP <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.php" tabindex="-1" aria-disabled="true">Sign In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true" >Event</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Past Events</a>
+                </li>
+
+            <?php endif; ?>
         </ul>
     </div>
 </nav>
+<div class="container">
+
+    <?php if (isset($_SESSION['flash'])): ?>
+        <?php foreach($_SESSION['flash'] as $type => $message): ?>
+
+            <div class="alert alert-<?= $type; ?>">
+                <?= $message; ?>
+            </div>
+        <?php endforeach; ?>
+        <?php unset($_SESSION['flash']); ?>
+    <?php endif; ?>
+
+
+</div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script></body>
 </body>
