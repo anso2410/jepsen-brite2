@@ -5,22 +5,20 @@ if(!empty($_POST) && !empty($_POST['username']) && !empty($_POST['password'])){
 
     $requete = $pdo->prepare('SELECT * FROM users WHERE (username = :username OR email = :username ) AND confirmed_at IS NOT NULL');
     $requete->execute(['username' => $_POST['username']]);
-    $user = $requete->fetch();
+        $user = $requete->fetch();
+
+       // debug (password_verify ($_POST['password'], $user->password));
+        if(password_verify($_POST['password'], $user->password)){
+            session_start();
+            $_SESSION['auth'] = $user;
+            $_SESSION['flash']['success'] = "Congratulation you are connected! to Jepsen-Brite";
+            header('Location: account.php');
+            exit();
+
+        }else{
+            $_SESSION['flash']['danger'] = "Incorrect username or password !";
+        }
     debug($_SESSION);
-
-    // debug (password_verify ($_POST['password'], $user->password));
-    if(password_verify($_POST['password'], $user->password)){
-        session_start();
-        $_SESSION['auth'] = $user;
-        $_SESSION['flash']['success'] = "Congratulation you are connected! to Jepsen-Brite";
-        header('Location: account.php');
-        debug($_SESSION);
-        exit();
-
-    }else{
-        $_SESSION['flash']['danger'] = "Incorrect username or password !";
-    }
-
 }
 
 ?>
@@ -43,6 +41,10 @@ if(!empty($_POST) && !empty($_POST['username']) && !empty($_POST['password'])){
         <input type="password" name="password" class="form-control" />
     </div>
     <div>
-        <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary">Login</button>
     </div>
 </form>
+
+
+
+

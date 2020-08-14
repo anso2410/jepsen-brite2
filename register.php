@@ -54,9 +54,10 @@ if(!empty($_POST))
         $requete->execute([$_POST['username'], $password, $_POST['email'], $token] );
         $user_id = $pdo->lastInsertId();
         $email = $_POST['email'];
-        mail($email, 'confirmation de votre compte',"cliquez sur ce lien pour valider\n\nhttp://127.0.0.1/projects/jepsen-brite/confirm.php?id=$user_id&token=$token");
+        mail($email, 'confirmation de votre compte',"cliquez sur ce lien pour valider\n\nhttps://still-island-51569.herokuapp.com/confirm.php?id=$user_id&token=$token");
         $_SESSION['flash']['success'] = "You receive an email: Please enter your validation token to register your account";
         // die('account created !');
+
         header('Location:confirm.php?id='.$user_id.'&token='.$token);
 
         exit();
@@ -123,8 +124,12 @@ if(!empty($_POST))
             <input type="password" name="password_confirm" class="form-control" />
         </div>
 
-
-
+        <!--<form action="" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Avatar : </label>
+                <input type="file" name="avatar"   class=" btn btn-warning" ><br>
+            </div>
+        </form > -->
 
 
         <button type="submit" class="btn btn-primary">Register your account</button>
@@ -136,8 +141,5 @@ if(!empty($_POST))
 
 
 </div>
-
-
-
 </body>
 </html>
